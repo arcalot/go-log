@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+const (
+	DebugColor   = "\033[0;2m"
+	WarningColor = "\033[1;33m"
+	ErrorColor   = "\033[1;31m"
+)
+
 // Message is a single log message.
 type Message struct {
 	Timestamp time.Time `json:"timestamp"`
@@ -14,5 +20,15 @@ type Message struct {
 }
 
 func (m Message) String() string {
-	return fmt.Sprintf("%s\t%s\t%s\t%s", m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message)
+	var Color string
+	if m.Level == "debug" {
+		Color = DebugColor
+	} else if m.Level == "warning" {
+		Color = WarningColor
+	} else if m.Level == "error" {
+		Color = ErrorColor
+	} else {
+		Color = "\033[0m"
+	}
+	return fmt.Sprintf("%s%s\t%s\t%s\t%s\033[0m", Color, m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message)
 }
