@@ -19,7 +19,7 @@ func TestMessage(t *testing.T) {
 		Labels:    map[string]string{"source": "test"},
 		Message:   "Hello world!",
 	}
-	if m.String() != "2006-01-02T15:04:05Z\terror\tsource=test\tHello world!" {
+	if m.String() != log.ErrorColor+"2006-01-02T15:04:05Z\terror\tsource=test\tHello world!"+log.ResetColor {
 		t.Fatalf("Incorrect message string: %s", m.String())
 	}
 }

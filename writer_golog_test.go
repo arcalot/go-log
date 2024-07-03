@@ -23,7 +23,7 @@ func TestGoLogger(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(buf.String(), "Hello world!\n") {
+	if !strings.Contains(buf.String(), "Hello world!") {
 		t.Fatalf("failed to find written log message in output")
 	}
 }
