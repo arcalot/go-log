@@ -22,13 +22,14 @@ type Message struct {
 
 func (m Message) String() string {
 	var Color string
-	if m.Level == "debug" {
+	switch m.Level {
+	case "debug":
 		Color = DebugColor
-	} else if m.Level == "warning" {
+	case "warning":
 		Color = WarningColor
-	} else if m.Level == "error" {
+	case "error":
 		Color = ErrorColor
-	} else {
+	default:
 		Color = ResetColor
 	}
 	return fmt.Sprintf("%s%s\t%s\t%s\t%s%s", Color, m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message, ResetColor)
