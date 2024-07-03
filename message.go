@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	ResetColor   = "\033[0m"
 	DebugColor   = "\033[0;2m"
 	WarningColor = "\033[1;33m"
 	ErrorColor   = "\033[1;31m"
@@ -28,7 +29,7 @@ func (m Message) String() string {
 	} else if m.Level == "error" {
 		Color = ErrorColor
 	} else {
-		Color = "\033[0m"
+		Color = ResetColor
 	}
-	return fmt.Sprintf("%s%s\t%s\t%s\t%s\033[0m", Color, m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message)
+	return fmt.Sprintf("%s%s\t%s\t%s\t%s%s", Color, m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message, ResetColor)
 }
