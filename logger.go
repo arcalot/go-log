@@ -4,6 +4,7 @@ import (
 	"fmt"
 	goLog "log"
 	"os"
+	"sync"
 	"testing"
 	"time"
 )
@@ -57,6 +58,7 @@ func NewLogger(minLevel Level, writer Writer) Logger {
 		minLevel,
 		writer,
 		map[string]string{},
+		sync.Mutex{},
 	}
 }
 
@@ -77,9 +79,10 @@ func NewGoLogger(minimumLevel Level, logger ...*goLog.Logger) Logger {
 }
 
 type logger struct {
-	minLevel Level
-	writer   Writer
-	labels   Labels
+	minLevel   Level
+	writer     Writer
+	labels     Labels
+	writeMutex sync.Mutex
 }
 
 func (l logger) Debugf(format string, args ...interface{}) {
@@ -102,6 +105,10 @@ func (l logger) Writef(level Level, message string, args ...interface{}) {
 	if !l.minLevel.ShouldPrint(level) {
 		return
 	}
+	// Lock after ShouldPrint, because ShouldPrint doesn't access shared data
+	// Required to satisfy the go race detector.
+	l.writeMutex.Lock()
+	defer l.writeMutex.Unlock()
 	if err := l.writer.Write(Message{
 		Timestamp: time.Now(),
 		Level:     level,
