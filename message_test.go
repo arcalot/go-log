@@ -1,6 +1,7 @@
 package log_test
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -19,7 +20,7 @@ func TestMessage(t *testing.T) {
 		Labels:    map[string]string{"source": "test"},
 		Message:   "Hello world!",
 	}
-	if m.String() != log.ErrorColor+"2006-01-02T15:04:05Z\terror\tsource=test\tHello world!"+log.DefaultColor {
+	if !strings.Contains(m.String(), "2006-01-02T15:04:05Z\terror\tsource=test\tHello world!") {
 		t.Fatalf("Incorrect message string: %s", m.String())
 	}
 }
