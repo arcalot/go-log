@@ -8,13 +8,19 @@ import (
 	"golang.org/x/term"
 )
 
-var DefaultColor = "\033[0m"
-
 const (
-	InfoColor    = "\033[0m"
-	DebugColor   = "\033[0;2m"
-	WarningColor = "\033[1;33m"
-	ErrorColor   = "\033[1;31m"
+	AnsiReset  = "\033[0m"
+	AnsiDim    = "\033[0;2m"
+	AnsiYellow = "\033[1;33m"
+	AnsiRed    = "\033[1;31m"
+)
+
+var (
+	DefaultColor = AnsiReset
+	InfoColor    = AnsiReset
+	DebugColor   = AnsiDim
+	WarningColor = AnsiYellow
+	ErrorColor   = AnsiRed
 )
 
 // Message is a single log message.
