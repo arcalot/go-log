@@ -8,9 +8,10 @@ import (
 	"golang.org/x/term"
 )
 
-var ResetColor = "\033[0m"
+var DefaultColor = "\033[0m"
 
 const (
+	InfoColor    = "\033[0m"
 	DebugColor   = "\033[0;2m"
 	WarningColor = "\033[1;33m"
 	ErrorColor   = "\033[1;31m"
@@ -34,12 +35,22 @@ func (m Message) String() string {
 			Color = WarningColor
 		case "error":
 			Color = ErrorColor
+		case "info":
+			Color = InfoColor
 		default:
-			Color = ResetColor
+			Color = DefaultColor
 		}
 	} else {
 		Color = ""
-		ResetColor = ""
+		DefaultColor = ""
 	}
-	return fmt.Sprintf("%s%s\t%s\t%s\t%s%s", Color, m.Timestamp.Format(time.RFC3339), m.Level, m.Labels, m.Message, ResetColor)
+	return fmt.Sprintf(
+		"%s%s\t%s\t%s\t%s%s",
+		Color,
+		m.Timestamp.Format(time.RFC3339),
+		m.Level,
+		m.Labels,
+		m.Message,
+		DefaultColor,
+	)
 }
