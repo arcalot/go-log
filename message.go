@@ -17,11 +17,20 @@ const (
 
 var (
 	DefaultColor = AnsiReset
-	InfoColor    = AnsiReset
-	DebugColor   = AnsiDim
-	WarningColor = AnsiYellow
-	ErrorColor   = AnsiRed
+	Color        = map[Level]string{
+		"debug":   AnsiDim,
+		"info":    AnsiReset,
+		"warning": AnsiYellow,
+		"error":   AnsiRed,
+	}
 )
+
+func init() {
+	if !term.IsTerminal(int(os.Stderr.Fd())) {
+		DefaultColor = ""
+		Color = map[Level]string{}
+	}
+}
 
 // Message is a single log message.
 type Message struct {
@@ -32,27 +41,9 @@ type Message struct {
 }
 
 func (m Message) String() string {
-	var Color string
-	if term.IsTerminal(int(os.Stderr.Fd())) {
-		switch m.Level {
-		case "debug":
-			Color = DebugColor
-		case "warning":
-			Color = WarningColor
-		case "error":
-			Color = ErrorColor
-		case "info":
-			Color = InfoColor
-		default:
-			Color = DefaultColor
-		}
-	} else {
-		Color = ""
-		DefaultColor = ""
-	}
 	return fmt.Sprintf(
 		"%s%s\t%s\t%s\t%s%s",
-		Color,
+		Color[m.Level],
 		m.Timestamp.Format(time.RFC3339),
 		m.Level,
 		m.Labels,
