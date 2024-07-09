@@ -23,8 +23,8 @@ func TestMessage(t *testing.T) {
 	assert.Equals(
 		t,
 		m.String(),
-		log.Color[m.Level]+
+		log.SetColor[m.Level]+
 			"2006-01-02T15:04:05Z\terror\tsource=test\tHello world!"+
-			log.DefaultColor,
+			log.ResetColor,
 	)
 }

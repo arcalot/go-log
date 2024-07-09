@@ -16,19 +16,19 @@ const (
 )
 
 var (
-	DefaultColor = AnsiReset
-	Color        = map[Level]string{
+	SetColor = map[Level]string{
 		"debug":   AnsiDim,
 		"info":    AnsiReset,
 		"warning": AnsiYellow,
 		"error":   AnsiRed,
 	}
+	ResetColor = AnsiReset
 )
 
 func init() {
 	if !term.IsTerminal(int(os.Stderr.Fd())) {
-		DefaultColor = ""
-		Color = map[Level]string{}
+		SetColor = map[Level]string{}
+		ResetColor = ""
 	}
 }
 
@@ -43,11 +43,11 @@ type Message struct {
 func (m Message) String() string {
 	return fmt.Sprintf(
 		"%s%s\t%s\t%s\t%s%s",
-		Color[m.Level],
+		SetColor[m.Level],
 		m.Timestamp.Format(time.RFC3339),
 		m.Level,
 		m.Labels,
 		m.Message,
-		DefaultColor,
+		ResetColor,
 	)
 }
