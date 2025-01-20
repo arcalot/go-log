@@ -2,7 +2,7 @@ module go.arcalot.io/log/v2
 
 go 1.23.0
 
-toolchain go1.23.4
+toolchain go1.23.5
 
 require (
 	go.arcalot.io/assert v1.8.0
