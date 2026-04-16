@@ -26,7 +26,7 @@ var (
 )
 
 func init() {
-	if !term.IsTerminal(int(os.Stderr.Fd())) {
+	if !term.IsTerminal(int(os.Stderr.Fd())) { //nolint:gosec // File descriptors are small ints; no overflow risk.
 		SetColor = map[Level]string{}
 		ResetColor = ""
 	}
